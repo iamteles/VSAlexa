@@ -1,0 +1,77 @@
+{
+    "characters": ["alexa", "gf"],
+    "background": "allegro",
+    "finisher": "allegro",
+    "lines": [
+        {
+            "character": "left",
+            "frame": "sad",
+            "text": "I can't believe he called me expendable...."
+        },
+        {
+            "character": "left",
+            "frame": "serious",
+            "text": "I'll show him..."
+        },
+        {
+            "character": "left",
+            "frame": "neutral",
+            "text": "*notices gf*"
+        },
+        {
+            "character": "right",
+            "frame": "neutral",
+            "text": ":D"
+        },
+        {
+            "character": "left",
+            "frame": "neutral",
+            "text": "Hey, brown haired lady in the red dress, have you seen a brown haired lady in a red dress around here?"
+        },
+        {
+            "character": "right",
+            "frame": "neutral",
+            "text": ":D"
+        },
+        {
+            "character": "left",
+            "frame": "stunned",
+            "text": "..."
+        },
+        {
+            "character": "left",
+            "frame": "stunned",
+            "text": "...oh"
+        },
+        {
+            "character": "left",
+            "frame": "shock",
+            "text": "OOOOOOOOH"
+        },
+        {
+            "character": "left",
+            "frame": "serious",
+            "text": "Y-you! I have to kill you!!"
+        },
+        {
+            "character": "right",
+            "frame": "neutral",
+            "text": ":D"
+        },
+        {
+            "character": "left",
+            "frame": "serious",
+            "text": "Prepare yourself demon!!!!!! Grovel before the power of the elite demon hunter Alexa McKenna! All that oppose me never come out ali-"
+        },
+        {
+            "character": "right",
+            "frame": "neutral",
+            "text": "Dawg shut the hell up"
+        },
+        {
+            "character": "left",
+            "frame": "shock",
+            "text": "!!!"
+        }
+    ]
+}

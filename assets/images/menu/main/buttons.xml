@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="buttons.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="options0000" x="27" y="27" width="377" height="132" pivotX="42.5" pivotY="14.9"/>
+	<SubTexture name="play0000" x="27" y="235" width="377" height="132" pivotX="42.5" pivotY="14.9"/>
+</TextureAtlas>

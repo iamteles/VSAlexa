@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="bomb_splash.png">
+	<!-- Created with Adobe Animate version 20.0.3.25487 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="bombexplode0000" x="7" y="7" width="130" height="137"/>
+	<SubTexture name="bombexplode0001" x="7" y="151" width="130" height="137"/>
+	<SubTexture name="bombexplode0002" x="7" y="7" width="0" height="0" frameX="0" frameY="0" frameWidth="130" frameHeight="137"/>
+</TextureAtlas>

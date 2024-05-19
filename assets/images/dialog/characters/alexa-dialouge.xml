@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="alexa-dialouge.png">
+	<!-- Created with Adobe Animate version 23.0.0.407 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="neutral0000" x="27" y="27" width="380" height="587" pivotX="0" pivotY="0"/>
+	<SubTexture name="sad0000" x="483" y="27" width="380" height="587" pivotX="0" pivotY="0"/>
+	<SubTexture name="serious0000" x="939" y="27" width="380" height="587" pivotX="0" pivotY="0"/>
+	<SubTexture name="shock0000" x="1395" y="27" width="380" height="587" pivotX="0" pivotY="0"/>
+	<SubTexture name="stunned0000" x="27" y="690" width="380" height="587" pivotX="0" pivotY="0"/>
+</TextureAtlas>
