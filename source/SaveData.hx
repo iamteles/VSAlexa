@@ -51,11 +51,11 @@ class SaveData
 			CHECKMARK,
 			"Makes the ratings stick on the HUD"
 		],
-		"Rumble" => [
+		/*"Rumble" => [
 			true,
 			CHECKMARK,
 			"Wether to utilize Controller Vibration/Rumble."
-		],
+		],*/
 		"lain" => [
 			false,
 			CHECKMARK,
@@ -137,16 +137,60 @@ class SaveData
 	public static var saveControls:FlxSave = new FlxSave();
 	public static function init()
 	{
-		saveSettings.bind("settings",	Main.savePath); // use these for settings
-		saveControls.bind("controls", 	Main.savePath); // controls :D
-		FlxG.save.bind("save-data", 	Main.savePath); // these are for other stuff
+		saveSettings.bind("settings"); // use these for settings
+		saveControls.bind("controls"); // controls :D
+		FlxG.save.bind("save-data"); // these are for other stuff
 		
 		load();
 		Controls.load();
 		Highscore.load();
 		subStates.editors.ChartAutoSaveSubState.load(); // uhhh
 	}
+
+	public static function load()
+	{
+		if(saveSettings.data.volume != null)
+			FlxG.sound.volume = saveSettings.data.volume;
+		if(saveSettings.data.muted != null)
+			FlxG.sound.muted  = saveSettings.data.muted;
+
+		if(saveSettings.data.settings == null)
+		{
+			for(key => values in displaySettings)
+				data[key] = values[0];
+			
+			saveSettings.data.settings = data;
+		}
+		else
+		{
+			var freeze:Null<Bool> = saveSettings.data.settings.get("Unfocus Freeze");
+			if(freeze != null) {
+				saveSettings.data.settings.set("Unfocus Pause", freeze);
+				saveSettings.data.settings.remove("Unfocus Freeze");
+			}
+		}
+		
+		if(Lambda.count(displaySettings) != Lambda.count(saveSettings.data.settings)) {
+			data = saveSettings.data.settings;
+			
+			for(key => values in displaySettings) {
+				if(data[key] == null)
+					data[key] = values[0];
+			}
+
+			for(key => values in data) {
+				if(displaySettings[key] == null)
+					data.remove(key);
+			}
+
+			saveSettings.data.settings = data;
+		}
+		
+		data = saveSettings.data.settings;
+		save();
+	}
 	
+	/* -- legacy save loading
 	public static function load()
 	{
 		if(saveSettings.data.volume != null)
@@ -164,7 +208,7 @@ class SaveData
 		
 		data = saveSettings.data.settings;
 		save();
-	}
+	}*/
 	
 	public static function save()
 	{

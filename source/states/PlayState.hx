@@ -358,6 +358,9 @@ class PlayState extends MusicBeatState
 			// oop
 			
 			thisStrumline.addSplash(note);
+
+			if(note.isHold && !note.isHoldEnd)
+				thisStrumline.addCover(note);
 			
 			//thisStrumline.unspawnNotes.push(note);
 			
@@ -372,7 +375,7 @@ class PlayState extends MusicBeatState
 			for(strum in strumline.strumGroup)
 			{
 				strum.y += CoolUtil.noteWidth() * 0.6 * strumMult;
-				strum.alpha = 0.0001;
+				strum.falpha = 0.0001;
 			}
 		}
 
@@ -489,7 +492,7 @@ class PlayState extends MusicBeatState
 						// dad's notes spawn backwards
 						var strumMult:Int = (strumline.isPlayer ? strum.strumData : 3 - strum.strumData);
 						// actual tween
-						FlxTween.tween(strum, {y: strum.initialPos.y, alpha: 0.9}, Conductor.crochet / 1000, {
+						FlxTween.tween(strum, {y: strum.initialPos.y, falpha: 0.9}, Conductor.crochet / 1000, {
 							ease: FlxEase.cubeOut,
 							startDelay: Conductor.crochet / 2 / 1000 * strumMult,
 						});
@@ -692,6 +695,10 @@ class PlayState extends MusicBeatState
 				strumline.playSplash(note);
 			}
 		}
+		else if(note.isHoldEnd) {
+			strumline.playSplash(note, strumline.isPlayer);
+			strumline.endCover(note, strumline.isPlayer);
+		}
 
 		if(thisChar != null && !note.isHold)
 		{
@@ -728,6 +735,9 @@ class PlayState extends MusicBeatState
 		note.missed = true;
 		note.setAlpha();
 		
+		if(note.isHold)
+			strumline.endCover(note, strumline.isPlayer);
+
 		// put stuff inside if(onlyOnce)
 		var onlyOnce:Bool = false;
 		if(!note.isHold)
@@ -781,6 +791,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		/*
 		if(SaveData.data.get('Rumble')) {
 			var gamepad:FlxGamepad = FlxG.gamepads.firstActive;
 			if (gamepad != null)
@@ -788,6 +799,7 @@ class PlayState extends MusicBeatState
 				gamepad.rumble(340, 0.4, 0.7);
 			}
 		}
+		*/
 	}
 	function onNoteHold(note:Note, strumline:Strumline)
 	{
@@ -805,6 +817,8 @@ class PlayState extends MusicBeatState
 			health -= 0.015;
 		
 		if(note.gotHit || thisChar == null) return;
+
+		strumline.playCover(note, strumline.isPlayer);
 		
 		if(note.noteType != "no animation")
 		{

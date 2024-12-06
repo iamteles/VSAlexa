@@ -27,7 +27,7 @@ class ChartAutoSaveSubState extends MusicBeatSubState
 	public static function load()
 	{
 		saveFile = new FlxSave();
-		saveFile.bind("autosave", Main.savePath);
+		saveFile.bind("autosave");
 		
 		if (saveFile.data.autoSaveArray == null)
 			saveFile.data.autoSaveArray = autoSaveArray;

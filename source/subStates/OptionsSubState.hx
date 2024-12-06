@@ -118,6 +118,13 @@ class OptionsSubState extends MusicBeatSubState
         infoTxt.setBorderStyle(OUTLINE, 0xFF000000, 1.5);
         add(infoTxt);
 
+        verTxt = new FlxText(0,0,0,'VS Alexa ${lime.app.Application.current.meta.get('version')}\nFNF: Doido Engine v3.2.1');
+        verTxt.setFormat(Main.gFont, 24, 0xFFFFFFFF, CENTER);
+        verTxt.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
+        verTxt.y = FlxG.height - verTxt.height - 10;
+        verTxt.screenCenter(X);
+        add(verTxt);
+
         spawnItems('main');
     }
 
@@ -296,11 +303,18 @@ class OptionsSubState extends MusicBeatSubState
         }
     }
 
+    var verTxt:FlxText;
+
     function spawnItems(curCat:String)
     {
         this.curCat = curCat;
         grpItems.clear();
         grpAttachs.clear();
+
+        if(curCat == "main")
+            verTxt.alpha = 1;
+        else
+            verTxt.alpha = 0;
 
         if(bgColors.exists(curCat))
             bg.color = bgColors.get(curCat);

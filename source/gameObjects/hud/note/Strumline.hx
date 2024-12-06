@@ -1,5 +1,6 @@
 package gameObjects.hud.note;
 
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
@@ -13,13 +14,18 @@ class Strumline extends FlxGroup
 	public var allNotes:FlxTypedGroup<Note>;
 
 	public var splashGroup:FlxTypedGroup<SplashNote>;
+	public var coverGroup:FlxTypedGroup<HoldCover>;
 	
 	public var x:Float = 0;
 	public var downscroll:Bool = false;
+	
+	public var pauseNotes:Bool = false;
 	public var scrollSpeed:Float = 2.8;
+	public var scrollTween:FlxTween;
 
 	public var isPlayer:Bool = false;
 	public var botplay:Bool = false;
+	public var customData:Bool = false;
 
 	public var character:Character;
 
@@ -34,8 +40,9 @@ class Strumline extends FlxGroup
 		
 		allNotes = new FlxTypedGroup<Note>();
 		
-		add(holdGroup 	= new FlxTypedGroup<Note>());
 		add(strumGroup 	= new FlxTypedGroup<StrumNote>());
+		add(holdGroup 	= new FlxTypedGroup<Note>());
+		add(coverGroup = new FlxTypedGroup<HoldCover>());
 		add(splashGroup = new FlxTypedGroup<SplashNote>());
 		add(noteGroup 	= new FlxTypedGroup<Note>());
 		
@@ -72,45 +79,121 @@ class Strumline extends FlxGroup
 			noteGroup.remove(note);
 	}
 
+	// only one splash per note
+	public var spawnedSplashes:Array<String> = [];
 	public function addSplash(note:Note)
 	{
-		switch(SaveData.data.get("Note Splashes"))
+		if(note.isHold && !note.isHoldEnd) return;
+
+		// left-base-none
+		var splashName:String
+		= CoolUtil.getDirection(note.noteData) + '-'
+		+ note.assetModifier + '-'
+		+ (note.isHoldEnd ? "hold" : "note") + '-'
+		+ note.noteType;
+
+		//trace(splashName);
+
+		if(!spawnedSplashes.contains(splashName))
 		{
-			case "PLAYER ONLY": if(!isPlayer) return;
-			case "OFF": return;
-		}
-
-		var pref:String = '-' + CoolUtil.getDirection(note.noteData) + '-' + note.strumlineID;
-
-		if(!SplashNote.existentModifiers.contains(note.assetModifier + pref)
-		|| !SplashNote.existentTypes.contains(note.noteType + pref))
-		{
-			SplashNote.existentModifiers.push(note.assetModifier + pref);
-			SplashNote.existentTypes.push(note.noteType + pref);
-
+			spawnedSplashes.push(splashName);
+			
 			var splash = new SplashNote();
 			splash.reloadSplash(note);
 			splash.visible = false;
 			splashGroup.add(splash);
 			
-			//trace('added ${note.assetModifier + pref} ${note.noteType + pref}');
+			//trace('added ${note.strumlineID} $splashName lol');
 		}
 	}
 
-	public function playSplash(note:Note)
+	public function playSplash(note:Note, isPlayer:Bool = false)
 	{
+		//trace("trying to play " + note.assetModifier + note.noteType + note.noteData + note.isHoldEnd);
+		switch(SaveData.data.get("Note Splashes"))
+		{
+			case "PLAYER ONLY": if(!isPlayer) return;
+			case "OFF": return;
+		}
 		for(splash in splashGroup.members)
 		{
 			if(splash.assetModifier == note.assetModifier
 			&& splash.noteType == note.noteType
-			&& splash.noteData == note.noteData)
+			&& splash.noteData == note.noteData 
+			&& splash.holdSpl == note.isHoldEnd)
 			{
 				//trace("played");
 				var thisStrum = strumGroup.members[splash.noteData];
-				splash.x = thisStrum.x/* + thisStrum.width / 2*/ - splash.width / 2;
-				splash.y = thisStrum.y/* + thisStrum.height/ 2*/ - splash.height/ 2;
+				splash.x = thisStrum.x;
+				splash.y = thisStrum.y;
 
 				splash.playAnim();
+			}
+		}
+	}
+
+	public var spawnedCovers:Array<String> = [];
+	public function addCover(note:Note)
+	{
+		var coverName:String
+		= CoolUtil.getDirection(note.noteData) + '-'
+		+ note.assetModifier + '-'
+		+ note.noteType;
+
+		//trace(coverName);
+
+		if(!spawnedCovers.contains(coverName))
+		{
+			spawnedCovers.push(coverName);
+			
+			var cover = new HoldCover();
+			cover.reloadCover(note);
+			cover.visible = false;
+			coverGroup.add(cover);
+			
+			//trace('added ${note.strumlineID} $splashName lol');
+		}
+	}
+
+	public function playCover(note:Note, isPlayer:Bool = false)
+	{
+		//trace("trying to play " + note.assetModifier + note.noteType + note.noteData + note.isHoldEnd);
+		switch(SaveData.data.get("Note Splashes"))
+		{
+			case "PLAYER ONLY": if(!isPlayer) return;
+			case "OFF": return;
+		}
+		for(cover in coverGroup.members)
+		{
+			if(cover.assetModifier == note.assetModifier
+			&& cover.noteType == note.noteType
+			&& cover.noteData == note.noteData)
+			{
+				//trace("played");
+				var thisStrum = strumGroup.members[cover.noteData];
+				cover.x = thisStrum.x - cover.width / 2;
+				cover.y = thisStrum.y - cover.height/ 2;
+
+				cover.visible = true;
+			}
+		}
+	}
+
+	public function endCover(note:Note, isPlayer:Bool = false)
+	{
+		//trace("trying to play " + note.assetModifier + note.noteType + note.noteData + note.isHoldEnd);
+		switch(SaveData.data.get("Note Splashes"))
+		{
+			case "PLAYER ONLY": if(!isPlayer) return;
+			case "OFF": return;
+		}
+		for(cover in coverGroup.members)
+		{
+			if(cover.assetModifier == note.assetModifier
+			&& cover.noteType == note.noteType
+			&& cover.noteData == note.noteData)
+			{
+				cover.visible = false;
 			}
 		}
 	}
@@ -123,7 +206,7 @@ class Strumline extends FlxGroup
 	{
 		for(strum in strumGroup)
 		{
-			strum.y = (!downscroll ? 100 : FlxG.height - 100);
+			strum.y = (!downscroll ? 110 : FlxG.height - 110);
 			
 			strum.x = x;
 			strum.x += CoolUtil.noteWidth() * strum.strumData;

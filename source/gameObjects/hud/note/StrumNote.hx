@@ -20,6 +20,9 @@ class StrumNote extends FlxSprite
 	public var initialPos:FlxPoint = new FlxPoint(0,0);
 	
 	public var strumAngle:Float = 0;
+
+	public var falpha:Float = 1;
+	public var ralpha:Float = 0.7;
 	
 	public function reloadStrum(strumData:Int, ?assetModifier:String = "default"):StrumNote
 	{
@@ -75,11 +78,16 @@ class StrumNote extends FlxSprite
 	{
 		super.update(elapsed);
 		//angle += elapsed * 1000 * 180 / data.Conductor.crochet;
+		alpha = ralpha * falpha;
 		updateOffset();
 	}
 	
 	public function playAnim(animName:String, force:Bool = false)
 	{
+		if(animName == "confirm")
+			ralpha = 1;
+		else
+			ralpha = 0.7;
 		animation.play(animName, force);
 		updateOffset();
 	}

@@ -30,6 +30,8 @@ class SplashNote extends FlxSprite
 	public var noteType:String = "";
 	public var noteData:Int = 0;
 
+	public var holdSpl:Bool = false;
+
 	public function reloadSplash(note:Note)
 	{
 		var direction:String = CoolUtil.getDirection(note.noteData);
@@ -42,6 +44,11 @@ class SplashNote extends FlxSprite
 
 		if(noteType == "bomb")
 			splashtoplay = "bomb";
+
+		if(note.isHoldEnd) {
+			splashtoplay = "end";
+			holdSpl = true;
+		}
 
 		switch(splashtoplay)
 		{
@@ -56,13 +63,25 @@ class SplashNote extends FlxSprite
 				animation.addByPrefix('splash', 'bombexplode', 24, false);
 				scale.set(0.95,0.95);
 				updateHitbox();
-			default:
-				frames = Paths.getSparrowAtlas("notes/base/splashes");
+
+			case "end":
+				frames = Paths.getSparrowAtlas("notes/base/holdSplashes");
 				
-				animation.addByPrefix("splash1", '$direction splash 1', 24, false);
-				animation.addByPrefix("splash2", '$direction splash 2', 24, false);
+				direction = direction.toUpperCase();
+				animation.addByPrefix("splash",	'holdCoverEnd$direction', 	24, false);
+
+				for(anim in ["start", "loop", "splash"])
+					addOffset(anim, 6, -28);
 				
 				scale.set(0.7,0.7);
+				updateHitbox();
+			default:
+				frames = Paths.getSparrowAtlas("notes/base/splashes");
+			
+				animation.addByPrefix("splash1", '$direction splash', 24, false);
+				//animation.addByPrefix("splash2", 'note impact 2', 24, false);
+
+				scale.set(0.75,0.75);
 				updateHitbox();
 		}
 
@@ -78,11 +97,24 @@ class SplashNote extends FlxSprite
 		}
 	}
 
-	// plays a random animation
+	public var animOffsets:Map<String, Array<Float>> = [];
+	public function addOffset(animName:String, offsetX:Float, offsetY:Float) {
+		animOffsets.set(animName, [offsetX, offsetY]);
+	}
 	public function playAnim()
 	{
 		visible = true;
 		var animList = animation.getNameList();
-		animation.play(animList[FlxG.random.int(0, animList.length - 1)], true, false, 0);
+		var anim:String = animList[FlxG.random.int(0, animList.length - 1)];
+		animation.play(anim, true, false, 0);
+		updateHitbox();
+		offset.x += frameWidth * scale.x / 2;
+		offset.y += frameHeight* scale.y / 2;
+		if(animOffsets.exists(anim))
+		{
+			var daOffset = animOffsets.get(anim);
+			offset.x += daOffset[0];
+			offset.y += daOffset[1];
+		}
 	}
 }
