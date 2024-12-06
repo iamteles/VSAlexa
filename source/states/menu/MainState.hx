@@ -100,7 +100,7 @@ class MainState extends MusicBeatState
 			score.setFormat(Main.gFont, 24, 0xFFFFFFFF, LEFT);
 			score.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 			score.y = options.y + options.height + 15 + (score.height * awesomeCounter);
-			score.x = middle + 5;
+			score.x = middle + 15;
 			score.alpha = 0;
 
 			score.ID = awesomeCounter;
@@ -114,7 +114,7 @@ class MainState extends MusicBeatState
 			score.setFormat(Main.gFont, 24, 0xFFFFFFFF, LEFT);
 			score.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 			score.y = options.y + options.height + 15 + (score.height * otherCounter);
-			score.x = middle - score.width - 5;
+			score.x = middle - score.width + 5;
 			score.alpha = 0;
 
 			score.ID = otherCounter;

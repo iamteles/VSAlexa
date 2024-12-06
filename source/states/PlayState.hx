@@ -118,6 +118,7 @@ class PlayState extends MusicBeatState
 		extraCamZoom = 0.0;
 		forcedCamPos = null;
 		paused = false;
+		ratingScroll = SaveData.data.get("Downscroll");
 		
 		validScore = true;
 		
@@ -923,7 +924,7 @@ class PlayState extends MusicBeatState
 			if(SaveData.data.get("Middlescroll"))
 				daX -= FlxG.width / 4;
 
-			daRating.setPos(daX, SaveData.data.get('Downscroll') ? FlxG.height - 100 : 100);
+			daRating.setPos(daX, ratingScroll ? FlxG.height - 100 : 100);
 		}
 		else
 		{
@@ -1801,12 +1802,16 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public static var ratingScroll:Bool = false;
+
 	function setScroll(down:Bool) {
 		for(strumline in strumlines.members)
 		{
 			strumline.downscroll = down;
 			strumline.updateHitbox();
 		}
+
+		ratingScroll = down;
 
 		hudBuild.updateHitbox(bfStrumline.downscroll);
 	}
