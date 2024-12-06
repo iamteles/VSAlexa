@@ -35,9 +35,21 @@
 	<source path="source" />
 	<assets path="assets" />
 
+	<!-- RENAME UNDERSCORE FOLDERS -->
+	<section if="RENAME_UNDERSCORE">
+		<assets path="assets/images/characters/_offsets" 	rename="assets/images/characters/offsets"/>
+	</section>
+
+	<!-- OpenAL config -->
+	<section if="desktop">
+		<assets path="alsoft.txt" rename="alsoft.ini" 	type="text" if=	"windows"/>
+		<assets path="alsoft.txt" rename="alsoft.conf" 	type="text" unless="windows"/>
+	</section>
+
 	<!-- _____________________________ Custom Defines ___________________________ -->
 
-	<define name="DISCORD_RPC" if="desktop" unless="web || neko" />
+	<define name="DISCORD_RPC" 			if="cpp" unless="android" />
+	<define name="RENAME_UNDERSCORE" 	if="html5 || android"/>
 
 	<!-- _______________________________ Libraries ______________________________ -->
 

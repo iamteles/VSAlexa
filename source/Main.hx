@@ -14,6 +14,10 @@ import haxe.io.Path;
 import openfl.Lib;
 import data.Discord.DiscordClient;
 
+#if desktop
+import data.ALSoftConfig;
+#end
+
 #if !html5
 import sys.FileSystem;
 import sys.io.File;
